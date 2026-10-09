@@ -162,6 +162,17 @@ out:
 	return LV_RES_OK;
 }
 
+static u32 _clamp_percent(const char *val)
+{
+	int v = atoi(val);
+
+	if (v < 0)
+		return 0;
+	if (v > 100)
+		return 100;
+	return v;
+}
+
 static void _load_saved_configuration()
 {
 	LIST_INIT(ini_sections);
@@ -228,6 +239,10 @@ skip_main_cfg_parse:
 					n_cfg.theme_bg       = strtol(kv->val, NULL, 16);
 				else if (!strcmp("themecolor",   kv->key))
 					n_cfg.theme_color    = atoi(kv->val);
+				else if (!strcmp("themesat",     kv->key))
+					n_cfg.theme_sat      = _clamp_percent(kv->val);
+				else if (!strcmp("themeval",     kv->key))
+					n_cfg.theme_val      = _clamp_percent(kv->val);
 				else if (!strcmp("entries5col",  kv->key))
 					n_cfg.entries_5_col  = atoi(kv->val) == 1;
 				else if (!strcmp("timeoffset",   kv->key))

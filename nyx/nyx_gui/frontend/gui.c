@@ -1752,7 +1752,7 @@ static lv_res_t _create_window_home_launch(lv_obj_t *btn)
 	// Create colorized icon style based on its parent style.
 	static lv_style_t img_style;
 	lv_style_copy(&img_style, &lv_style_plain);
-	img_style.image.color = COLOR_HOS_TURQUOISE_EX(n_cfg.theme_color);
+	img_style.image.color = COLOR_HOS_TURQUOISE_EX(n_cfg.theme_color, n_cfg.theme_sat, n_cfg.theme_val);
 	img_style.image.intense = LV_OPA_COVER;
 
 	// Parse ini boot entries and set buttons/icons.
@@ -2352,7 +2352,7 @@ static void _nyx_set_default_styles(lv_theme_t * th)
 	tabview_btn_tgl_pr.body.grad_color = tabview_btn_tgl_pr.body.main_color;
 	tabview_btn_tgl_pr.body.opa = 35; // 13.7%.
 
-	lv_color_t tmp_color = COLOR_HOS_TURQUOISE_EX(n_cfg.theme_color);
+	lv_color_t tmp_color = COLOR_HOS_TURQUOISE_EX(n_cfg.theme_color, n_cfg.theme_sat, n_cfg.theme_val);
 	text_color = malloc(32);
 	s_printf(text_color, "#%06X", (u32)(tmp_color.full & 0xFFFFFF));
 }
@@ -2533,7 +2533,7 @@ void nyx_load_and_run()
 	tmp451_init();
 
 	// Set hekate theme based on chosen hue.
-	lv_theme_t *th = lv_theme_hekate_init(n_cfg.theme_bg, n_cfg.theme_color, NULL);
+	lv_theme_t *th = lv_theme_hekate_init(n_cfg.theme_bg, n_cfg.theme_color, n_cfg.theme_sat, n_cfg.theme_val, NULL);
 	lv_theme_set_current(th);
 
 	// Create main menu

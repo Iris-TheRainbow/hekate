@@ -45,7 +45,7 @@ extern "C" {
 #define COLOR_HOS_BG_LIGHT     LV_COLOR_HEX(0x3D3D3D)
 #define COLOR_HOS_BG_LIGHTER   LV_COLOR_HEX(0x4D4D4D)
 
-#define COLOR_HOS_TURQUOISE_EX(hue) (hue ? lv_color_hsv_to_rgb(hue, 100, 100) : lv_color_hsv_to_rgb(53, 8, 90)) // 0x00FFC9
+#define COLOR_HOS_TURQUOISE_EX(hue, sat, val) ((hue) ? lv_color_hsv_to_rgb(hue, sat, val) : lv_color_hsv_to_rgb(53, 8, 90)) // 0x00FFC9 at sat/val 100.
 
 /**********************
  *      TYPEDEFS
@@ -60,10 +60,12 @@ extern uint32_t theme_bg_color;
 /**
  * Initialize the material theme
  * @param hue [0..360] hue value from HSV color space to define the theme's base color
+ * @param sat [0..100] saturation of the theme's base color
+ * @param val [0..100] value (brightness) of the theme's base color
  * @param font pointer to a font (NULL to use the default)
  * @return pointer to the initialized theme
  */
-lv_theme_t * lv_theme_hekate_init(uint32_t bg_color, uint16_t hue, lv_font_t *font);
+lv_theme_t * lv_theme_hekate_init(uint32_t bg_color, uint16_t hue, uint8_t sat, uint8_t val, lv_font_t *font);
 
 /**
  * Get a pointer to the theme
