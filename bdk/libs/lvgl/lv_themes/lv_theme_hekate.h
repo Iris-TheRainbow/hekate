@@ -56,6 +56,12 @@ extern "C" {
  **********************/
 
 extern uint32_t theme_bg_color;
+extern uint32_t theme_txt_color;
+extern uint32_t theme_hint_color;
+
+//again im doing a bit of a sketchy hack here to allow a runtime theme to be used
+#define COLOR_TEXT_EX(def) LV_COLOR_HEX(theme_txt_color ? theme_txt_color : (def))
+#define COLOR_HINT_EX(def) LV_COLOR_HEX(theme_hint_color ? theme_hint_color : (def))
 
 /**
  * Initialize the material theme

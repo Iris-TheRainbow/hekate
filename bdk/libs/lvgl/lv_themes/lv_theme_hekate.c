@@ -34,7 +34,7 @@
 #define COLOR_HOS_TEAL_LIGHT   (_hue ? ACCENT_HSV(100,  72) : lv_color_hsv_to_rgb(53, 8, 65)) // 0x00B78F
 #define COLOR_HOS_TEAL         (_hue ? ACCENT_HSV(100,  64) : lv_color_hsv_to_rgb(53, 8, 58)) // 0x00A273
 #define COLOR_HOS_ORANGE       LV_COLOR_HEX(0xFF5500)
-#define COLOR_HOS_TXT_WHITE    LV_COLOR_HEX(0xFBFBFB)
+#define COLOR_HOS_TXT_WHITE    COLOR_TEXT_EX(0xFBFBFB)
 
 #define COLOR_BG_DARK          LV_COLOR_HEX(theme_bg_color ? (theme_bg_color - 0x0B0B0B) : 0x121212) // 0x222222.
 #define COLOR_BG               LV_COLOR_HEX(theme_bg_color)                                          // 0x2D2D2D.
@@ -73,6 +73,8 @@ static uint8_t     _sat;
 static uint8_t     _val;
 static lv_font_t * _font;
 uint32_t theme_bg_color;
+uint32_t theme_txt_color;
+uint32_t theme_hint_color;
 
 /**********************
  *      MACROS
@@ -203,7 +205,7 @@ static void label_init(void)
 	sec.text.color = COLOR_HOS_ORANGE;
 
 	lv_style_copy(&hint, &prim);
-	hint.text.color = LV_COLOR_HEX(0xCCCCCC);
+	hint.text.color = COLOR_HINT_EX(0xCCCCCC);
 
 	theme.label.prim = &prim;
 	theme.label.sec = &sec;

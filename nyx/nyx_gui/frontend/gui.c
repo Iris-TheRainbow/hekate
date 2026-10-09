@@ -2165,6 +2165,8 @@ static void _create_status_bar(lv_theme_t * th)
 	lv_style_copy(&status_bar_style, &lv_style_plain_color);
 	status_bar_style.body.opa = LV_OPA_0;
 	status_bar_style.body.shadow.width = 0;
+	status_bar_style.text.color = COLOR_TEXT_EX(0xF0F0F0);
+	status_bar_style.image.color = COLOR_TEXT_EX(0xF0F0F0);
 
 	lv_obj_set_style(status_bar_bg, &status_bar_style);
 	lv_obj_set_size(status_bar_bg, LV_HOR_RES, LV_DPI * 9 / 14);
@@ -2300,6 +2302,7 @@ static void _nyx_set_default_styles(lv_theme_t * th)
 	monospace_text.text.font = &ubuntu_mono;
 	monospace_text.text.letter_space = 0;
 	monospace_text.text.line_space = 0;
+	monospace_text.text.color = COLOR_TEXT_EX(0xD8D8D8);
 
 	lv_style_copy(&btn_transp_rel, th->btn.rel);
 	btn_transp_rel.body.main_color = LV_COLOR_HEX(0x444444);

@@ -173,6 +173,74 @@ static u32 _clamp_percent(const char *val)
 	return v;
 }
 
+// Stock recolor tag colors, grouped by use. nyx_theme.ini [colors] can set a new color for each role.
+typedef struct _theme_role_t
+{
+	const char *name;
+	u32 stock[4];
+} theme_role_t;
+
+//these are just names ive given the colors nyx uses. the remaped colors very well may not be all the uses.
+// theres a lot of similar colors that are used in similar ways, so I just map them to the same color here.
+static const theme_role_t theme_roles[] = {
+	{ "error",   { 0xFF0000, 0xFF3C28, 0,        0 } },
+	{ "warn",    { 0xFFDD00, 0xFFD000, 0,        0 } },
+	{ "action",  { 0xFF8800, 0xFF8000, 0,        0 } },
+	{ "info",    { 0xC7EA46, 0x96FF00, 0xD4FF00, 0 } },
+	{ "ok",      { 0xFFBA00, 0,        0,        0 } },
+	{ "success", { 0x00DDFF, 0x00CCFF, 0x00FFCC, 0 } }
+};
+
+static void _load_theme_colors()
+{
+	LIST_INIT(ini_theme_sections);
+
+	if (ini_parse(&ini_theme_sections, "bootloader/nyx_theme.ini", false))
+		return;
+
+	LIST_FOREACH_ENTRY(ini_sec_t, ini_sec, &ini_theme_sections, link)
+	{
+		if (ini_sec->type != INI_CHOICE || strcmp(ini_sec->name, "colors"))
+			continue;
+
+		LIST_FOREACH_ENTRY(ini_kv_t, kv, &ini_sec->kvs, link)
+		{
+
+			u32 new_rgb = strtol(kv->val, NULL, 16) & 0xFFFFFF;
+			bool is_role = false;
+			if (!strcmp(kv->key, "text"))
+			{
+				theme_txt_color = new_rgb;
+				continue;
+			}
+
+			if (!strcmp(kv->key, "hint"))
+			{
+				theme_hint_color = new_rgb;
+				continue;
+			}
+
+			for (u32 i = 0; i < ARRAY_SIZE(theme_roles); i++)
+			{
+				if (strcmp(theme_roles[i].name, kv->key))
+					continue;
+
+				is_role = true;
+				for (u32 j = 0; j < ARRAY_SIZE(theme_roles[i].stock) && theme_roles[i].stock[j]; j++)
+					lv_draw_label_remap_add(theme_roles[i].stock[j], new_rgb);
+				break;
+			}
+
+			if (!is_role && strlen(kv->key) == 6)
+				lv_draw_label_remap_add(strtol(kv->key, NULL, 16), new_rgb);
+		}
+
+		break;
+	}
+
+	ini_free(&ini_theme_sections);
+}
+
 static void _load_saved_configuration()
 {
 	LIST_INIT(ini_sections);
@@ -456,6 +524,9 @@ void nyx_init_load_res()
 
 	// Load hekate/Nyx configuration.
 	_load_saved_configuration();
+
+	//load themes config
+	_load_theme_colors();
 
 	// Load Nyx resources.
 	if (nyx_load_resources())
